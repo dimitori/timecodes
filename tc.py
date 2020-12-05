@@ -1,9 +1,9 @@
 import sys
 from datetime import datetime, timedelta
 import pickle
+import os.path
 
-
-start_time = sys.argv[1]  # 19:07:00
+start_time = sys.argv[1]  # 2020-12-05T19:07:00
 comment = sys.argv[2]  # 'some text'
 
 try:
@@ -13,34 +13,29 @@ except IndexError:
 delta_min = timedelta(minutes=delta_min)
 
 
-start_h, start_m, start_s = [int(time) for time in start_time.split(':')]
+start_datetime = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S")
 
 now = datetime.now()
+delta = now - start_datetime
 
-if start_h <= now.hour:
-    start_datetime = now.replace(hour=start_h, minute=start_m, second=start_s)
-else:
-    delta = timedelta(days=1)
-    start_datetime = now.replace(hour=start_h, minute=start_m, second=start_s) - delta
+stream_time = datetime(1, 1, 1) + delta - delta_min
 
-
-d = now - start_datetime
-
-st = datetime(1, 1, 1) + d - delta_min
-
-stream_time = f'{st.hour:02}:{st.minute:02}:{st.second:02}'
+timecode = f'{stream_time.hour:02}:{stream_time.minute:02}:{stream_time.second:02}'
 
 with open(f'{start_time}.txt', 'a+') as f:
-    f.write(f'{stream_time} - {comment}\n')
+    f.write(f'{timecode} - {comment}\n')
 
-
-with open(f'{start_time}.pickle', 'rb') as f:
-    try:
-        data = pickle.load(f)
-    except (FileNotFoundError, EOFError):
-        data = []
+# Pickle here
+if os.path.exists(f'{start_time}.pickle'):
+    with open(f'{start_time}.pickle', 'rb+') as f:
+        try:
+            data = pickle.load(f)
+        except EOFError:
+            data = []
+else:
+    data = []
 
 
 with open(f'{start_time}.pickle', 'wb') as f:
-    data.append(st)
+    data.append((stream_time, comment))
     pickle.dump(data, f)

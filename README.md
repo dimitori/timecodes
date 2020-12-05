@@ -18,10 +18,10 @@ See the Example
 
 Input (in terminal):
 ```bash
-python tc.py 19:12:44 'some comment'
+python tc.py 2020-12-05T19:12:44 'some comment'
 ```
 
-Output (in 19:12:44.txt):
+Output (in 2020-12-05T19:12:44.txt):
 ```
 00:01:12 - some comment
 ```
@@ -31,7 +31,7 @@ Example above illustrates situation, when stream was started at 19:12:44 and com
 If there was last parameter, e.g. 1, then in *.txt would be time = 00:00:12
 
 
-Also we have output in 19:12:44.tuple.
+Also we have output in 2020-12-05T19:12:44.tuple.
 there will be python list of datetimes and comments:
 ```python
 List[Tuple[datetime, str]]
