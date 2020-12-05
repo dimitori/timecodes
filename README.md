@@ -1,6 +1,6 @@
 # Timecodes
 
-Small script for register time codes while streaming.
+Small script for time codes registering while streaming.
 
 ## Usage
 
