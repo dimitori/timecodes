@@ -5,7 +5,7 @@ Small script for register time codes while streaming.
 ## Usage
 
 ```bash
-python tc.py 19:12:44 'some comment' 3 
+python tc.py 2020-12-05T19:12:44 'some comment' 3 
 ```
 where
 19:12:44 - start time of stream.
